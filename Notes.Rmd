@@ -1,0 +1,142 @@
+---
+title: "Statistical Inference"
+author: "Samantha Toet"
+date: "11/28/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Intro
+
+Generating conclusions about a population from a noisy sample.
+
+Use data to estimate properties of the population. 
+
+## Probability 
+
+Probability is a function that takes a possible outcome from an expiriment and assigns it a number between 0 and 1. 
+
+The probability that something occurs is 1 (the die must be rolled)
+
+The probability of the union of any two sets of outcomes that have nothing in common (mutually exclusive) is the sum of their respectie probabilities. 
+
+For example: 
+
+* If A means you roll a 1 and a 2 and B means you roll a 4 and a 4, A and B cannot both occur. 
+* P(A $\cup$ B) = P(A) + P(B)
+
+Rules that probability must follow:
+
+* The probability that nothing occurs is 0
+* The probability that something occurs is 1
+* The probability of something is 1 minus the probability that the opposite occurs 
+* The probability of at least 1 of 2 (or more) things that can not simultaneously occur (mututally exclusive) is the sum of their respective probabilities. 
+* If an event A implies the occurence of event B, then the probability of A occuring is less than the probability that B occurs (think of A as being inside B)
+* For any 2 events the probability that at least one occurs is the sum of their probabilities minus their intersection 
+
+## Probability mass functions - discrete variables 
+
+A **random variable** is a numerical outcome of an expiriment. 
+
+Can be discrete (categorical) or continuous (ranges)
+
+A Probability Mass Function (PMF) evaluated at a value corresponds to the probability that a random variable takes that value. To be valid, the function must:
+
+* Be larger than or equal to 0
+* The sum of the possible values that the rand variable can take has to add up to 1
+
+Example, the Bernoulli distribution (result of a coin flip):
+
+X = 0 represents tails and X = 1 represents heads
+
+p(x) = (1/2)^x^ (1/2)^1-x^ for x = 0,1
+
+If you plug in 0 and 1 for x you get 1/2. This means that the probability of heads is 1/2 and the probability of tails is 1/2 for a fair coin. 
+
+## Probability denisity functions - continuous variables 
+
+A Probability Denisity Function (PDF) is a function associated with a continuous random variable. 
+
+To be valid, the function must:
+
+* Be larger than or equal to 0 everywhere
+
+* The total area under it must be 1
+
+Areas under PDFs correspond to probabilities for that random variable. 
+
+Example, a right triangle density curve of answered support phone calls:
+
+```{r}
+x <- c(-0.5, 0, 1, 1, 1.5)
+y <- c(0, 0, 2, 0, 0)
+plot(x, y, lwd = 3, frame = FALSE, type = "l")
+
+# note the area under the curve is 1
+```
+
+What's the probability that 75% or fewer calls get addressed in a randomly sampled day from this population?
+
+That would be the area under the curve between 0 - 0.75. The height of y when x = 0.75 is 1.5. Since this is a right triangle we can just use the formula to calculate the area of a triangle:
+
+```{r}
+1.5 * 0.75/2
+```
+
+So the probability is 0.56 or 56%. 
+
+This distribution is also an example of a beta distribution so we can use the pbeta function to predict the probability. Note that p in front of a function asks for the probability. 
+
+
+```{r}
+pbeta(0.75, 2, 1)
+```
+
+## Cumulative Distribution and Survival Functions
+
+The cumulative distribution function (CDF) of a random variable, X, returns the probability that the random variable is less than or equal to the value x - whether x is discrete or continuous. 
+
+`pbeta` is the CDF in R?
+
+F(x) = P(X<=x)
+
+The survival function of a random variable, X, is defined as the probability that the random variable is greater than the value x. 
+
+S(x) = P(X>x)
+
+Notice that S(x) = 1 - F(x)
+
+Example, what are the survival function and CDF from the density considered before? Whats the probability that 40%, 50%, and 60% or fewer get ansered on a random day? 
+
+```{r}
+pbeta(c(0.4, 0.5, 0.6), 2, 1)
+```
+
+The probability that 40% or fewer is 16%, 50% or fewer is 25%, and 60% or fewer is 36%. 
+
+## Quantiles
+
+An example of a sample quantile is scoring in the nth percentage on an exam. You know that you scored better than n% and (100-n)% scored better than you. 
+
+The $\alpha$^th^ quantile of a distribution with distribution function F is the point 
+$x_{\alpha}$ so that F($x_{\alpha}$) = $\alpha$
+
+A percentile is simply a quantile with $\alpha$ expressed as a percent
+
+The median is the 50^th^ percentile 
+
+For example, in a density curve, if x = 0.95, or is in the 95th percentile, about 95% of the observations that we draw from the population will be less than x and about 5% will be larger. 
+
+The sample is the estimator, the population (i.e. what we're infering about) is the estimand. 
+
+
+
+
+
+
+
+
+
