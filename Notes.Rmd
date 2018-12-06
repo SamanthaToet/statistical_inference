@@ -9,11 +9,18 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Intro
+## Intro
 
 Generating conclusions about a population from a noisy sample.
 
-Use data to estimate properties of the population. 
+A statistic (singular) is a number computed from a sample of data, and a random variable is an outcome from an experiment.
+
+Deterministic processes, such as computing means or variances, applied to random variables, produce additional random variables which have their own distributions.
+
+Two broad flavors of inference:
+
+1. Frequency - long run proportion of times an event occurs in independent, identically distributed repetitions.
+2. Bayesian - the probability estimate for a hypothesis is updated as additional evidence is acquired.
 
 ## Probability 
 
@@ -37,7 +44,21 @@ Rules that probability must follow:
 * If an event A implies the occurence of event B, then the probability of A occuring is less than the probability that B occurs (think of A as being inside B)
 * For any 2 events the probability that at least one occurs is the sum of their probabilities minus their intersection 
 
-## Probability mass functions - discrete variables 
+### Swirl examples 
+The probability of rolling a fair dice twice and getting a 4 both times is 1/6 * 1/6 = 1/36
+
+The probability of rolling a fair dice twice and getting the same number each time is 1/6 (since we don't care about the outcome of the first roll the probability is 1, the second roll has to match the first so it's probability is 1/6 so the probability of rolling the same number twice is 1 * 1/6 = 1/6)
+
+If you roll 2 dice (1 red 1 green), there are 36 different outcomes. The probability of rolling a 10 is 3/36. 
+
+The probability of at least one of two events, A and B, occurring is the sum of their individual probabilities minus the probability of their intersection. P(A U B) = P(A) + P(B) - P(A&B). Calculating P(A) and P(B) counts outcomes that are in both A and B twice, so they're overcounted. The probability of the intersection of the two events, denoted as A&B, must be subtracted from the sum.
+
+P(even number OR number greater than 8) = P(even number) + P(greater than 8) - P(even AND greater than 8) or (18+10-4)/36
+
+The probability of rolling a number greater than 10 is (2+1)/36: The only outcomes greater than 10 are 11 and 12 which are mutually exclusive. The first, 11, can occur in two ways, and the second, 12, can occur only with a roll of double 6's.
+
+
+### Probability mass functions - discrete variables 
 
 A **random variable** is a numerical outcome of an expiriment. 
 
@@ -56,7 +77,13 @@ p(x) = (1/2)^x^ (1/2)^1-x^ for x = 0,1
 
 If you plug in 0 and 1 for x you get 1/2. This means that the probability of heads is 1/2 and the probability of tails is 1/2 for a fair coin. 
 
-## Probability denisity functions - continuous variables 
+Suppose we have a coin which may or may not be fair. Let x=0 represent a 'heads' outcome and x=1 represent a 'tails' outcome of a coin toss. If p is the probability of 'heads' which of the following represents thePMF of the coin toss?
+
+(p^(1-x))*(1-p)^x
+
+
+
+### Probability denisity functions - continuous variables 
 
 A Probability Denisity Function (PDF) is a function associated with a continuous random variable. 
 
@@ -95,7 +122,7 @@ This distribution is also an example of a beta distribution so we can use the pb
 pbeta(0.75, 2, 1)
 ```
 
-## Cumulative Distribution and Survival Functions
+### Cumulative Distribution and Survival Functions
 
 The cumulative distribution function (CDF) of a random variable, X, returns the probability that the random variable is less than or equal to the value x - whether x is discrete or continuous. 
 
@@ -103,9 +130,13 @@ The cumulative distribution function (CDF) of a random variable, X, returns the 
 
 F(x) = P(X<=x)
 
+When the random variable is continuous,the PDF is the derivative of the CDF. So integrating the PDF (the line represented by the diagonal) yields the CDF. When you evaluate the CDF at the limits of integration the 
+result is an area. 
+
+
 The survival function of a random variable, X, is defined as the probability that the random variable is greater than the value x. 
 
-S(x) = P(X>x)
+S(x) = P(X>x)1
 
 Notice that S(x) = 1 - F(x)
 
@@ -117,7 +148,7 @@ pbeta(c(0.4, 0.5, 0.6), 2, 1)
 
 The probability that 40% or fewer is 16%, 50% or fewer is 25%, and 60% or fewer is 36%. 
 
-## Quantiles
+### Quantiles
 
 An example of a sample quantile is scoring in the nth percentage on an exam. You know that you scored better than n% and (100-n)% scored better than you. 
 
@@ -131,6 +162,35 @@ The median is the 50^th^ percentile
 For example, in a density curve, if x = 0.95, or is in the 95th percentile, about 95% of the observations that we draw from the population will be less than x and about 5% will be larger. 
 
 The sample is the estimator, the population (i.e. what we're infering about) is the estimand. 
+
+## Comparisons: PMF, PDF, CDF
+
+From: https://www.youtube.com/watch?v=1xQ4r2gcW3c
+
+Distributions characterize random variables. Random variables are either discrete (PMF) or continuous (PDF). About these distributions, we can ask either an "equal to" (PDF/PMF) question or a "less than" question (CDF). But all distributions have the same job: characterize the random variable.
+
+            Density     Cumulative
+
+Discrete:    PMF         CDF
+
+Continuous:  PDF         CDF
+
+
+Types of Distributions:
+
+* Uniform: flat, each outcome is equally likely (EX. rolling a single die)
+* Normal: curved (EX. rolling many dice and adding up)
+* Poisson: (EX. process breakdown)
+
+PDF requires an interval: P(x1 < X < x2)
+
+PMF is exact: P(X = x)
+
+CDF vs. PDF: CDF is less than or equal to while PDF is approximiately equal
+
+CDF: total area under the curve to the left as a percentage 
+
+## Conditional Probability
 
 
 
