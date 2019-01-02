@@ -9,6 +9,8 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Week 1: Probability & Expected Values
+
 ## Intro
 
 Generating conclusions about a population from a noisy sample.
@@ -191,6 +193,287 @@ CDF vs. PDF: CDF is less than or equal to while PDF is approximiately equal
 CDF: total area under the curve to the left as a percentage 
 
 ## Conditional Probability
+
+Let B be an event so that P(B) > 0, then the conditional probabiliyt of event A given B has occured is P(A|B) = P(A$\cap$B)/P(B)
+
+If A and B are independent (unrelated), then P(A|B) = P(A)
+
+## Bayes' Rule
+
+Bayes' Rule allows us to reverse the role of the conditioning set and the set that we want the probability of. 
+We want P(B | A) given P(A | B)
+
+EX. diagnostic tests for disease:
+
+* Let + mean someone tests positive and - means someone tests negative.
+* Let D and D^c be the event that the subject of the test has or does not have the disease, respectively. 
+* The **Sensitivity** is the probability that the test is positive given the subject actually has the disease (i.e. True Positive). So Sensitivity = P(+ | D). The mark of a good test is that the sensitivity is high. 
+* The **Specificity** is the probability that the test is negative given the subject does not have the disease (i.e. True Negative). So Specificity = P(- | D^c). Again, you want the specificity to be high for the test to be good. 
+* The **Positive Predictive Value** is the probability of having the disease given the postive test results. So PPV = P(D | +)
+* The **Negative Predictive Value** is the probability of NOT having the disease given a negative test result. So NPV = P(D^c | -)
+
+In the absense of a test, the probability of having the disease is the prevalence of the disease. P(D)
+
+EX. 
+Sensitivity of 99.7%
+Specifitity of 98.5%
+Pop with a 0.1% prevalence
+So, P(D|+) = 0.062
+
+
+### Liklihood ratios 
+
+P(D|+) / (P(D^c|+)) = [P(+|D) / P(+|D^C)] * [P(D) / P(D^c)]
+
+P(D|+) / (P(D^c|+)) = odds of a disease given a positive test result
+
+P(D) / P(D^c) = odds of a disease in the absense of a test result
+
+P(+|D) / P(+|D^c) = diagnostic liklihood ratio for a positive test result
+
+Low PPV can be related to low Prevalence.
+
+### Independence 
+
+Event A is independent of event B if:
+
+P(A|B) = P(A) where P(B) > 0, or
+
+P(A$\cap$B) = P(A) * P(B)
+
+EX. What is the probabily of flipping a coin and getting 2 consecutive heads?
+
+A = {Head on flip1} ~ P(A) = 0.5
+B = {Head on flip2} ~ P(B) = 0.5, so
+P(A$\cap$B) = P{Head on flips 1 and 2} = P(A) * P(B) = 0.5 x 0.5 = 0.25
+
+Random variables are said to be **IID (Independent Identically Distributed) Variables** if they are:
+
+* Independent: statistically unrelated from one and another
+* Identically distributed: all having been drawn from the same pop dist
+
+#### Swirl examples
+
+If you roll a die, what is P(A&B), where A is the eent of rolling a 3 and B is the event of the roll being odd? Answer: 1/6
+
+What expression represents P(A&B) / P(B) where A is the event of rolling a 3 and B is the event of the roll being odd? Answer: 1/6 / 1/2
+
+So P(A&B) = P(A|B) * P(B) and 
+P(B|A) = P(B&A)/P(A) = P(A|B) * P(B)/P(A)
+
+Suppose we don't know P(A), but we do know it's conditional properties, or the probability that if occurs is B occurs (i.e. P(A|B)), and the probability that it occurs if B doesn't occur (i.e. P(A|~B)). 
+
+We can then express P(A) = P(A|B) x P(B) + P(A|~B) x P(~B) and use this as the denominator in Bayes' Formula. 
+
+P(B|A) = P(A|B) * P(B) / [P(A|B) x P(B) + P(A|~B x P(~B))]
+
+Another exmaple using diseases:
+We know +|D and -|~D
+We want to know D|+
+Prevalence is 0.001, sensitivity is 99.7%, and specificity is 98.5%
+
+First compute the numerator, i.e multiply the test sensitivity by the prevalence: P(+|D) x P(D) = .997 x 0.001 = 0.000997
+
+Now solve for the remainder of the denominator, i.e multiply the complement of test specificity to the complement of prevalence:P(+|~D) x P(~D) = (1-0.985) x (1-0.001) = 0.014985
+
+Now compute the probability that the patient has the disease given his positive test result, or P(D|+). Plug your last two answers into the formula P(+|D) x P(D) / (P(+|D) x P(D) + P(+|~D) x P(~D) = 
+.000997/(.000997+.014985) = 0.06
+
+So the patient has a 6% chance of having the disease given the positive test results. This is the postive predictive value. 
+
+The diagnostic liklihood ratio of a positive test, DLR_+ is the ratio of the two conditional probabilitites. So DLR_+ = P(+|D) / P(+|~D) and DLR_- = P(-|D) / P(-|~D)
+
+DLR_+ value equal to N indicates that the hypothesis of disease is N times more supported by the data than the hypothesis of no disease
+
+## Expected Values
+
+Expected value = mean
+
+Sample values estimate population versions:
+
+* The mean is a characterization of the pop center
+* The variance and standard deviation are characterizations of how spread out it is
+
+The expected value, or mean of a random variable is the center of its distribution. It represents the center of mass of a collection of locations and weights. 
+
+Examples:
+
+A coin is flipped and X is declared 0 or 1 (H or T). What's the expected value of X?
+
+E[X] = 0.5 x 0 + 0.5 x 1 = 0.5
+
+So what about a biased coin? Suppose that random variable X is so that P(X=1) = p and P(X=0) = (1-p). What is it's expected value?
+
+E[X] = 0 x (1-p) + 1 x p = p 
+
+So what about a die? Suppose that a die is rolled and X is the number face up. What is the expected value of X?
+
+E[X] = 1(1/6) + 2(1/6) + 3(1/6) + 4(1/6) + 5(1/6) + 6(1/6) = 3.5
+
+One of the nice properties of the expected value operation is that it's linear. This means that, if c is a constant, then E(cX) = c*E(X). Also, if X and Y are two random variables then E(X+Y)=E(X)+E(Y). It follows that E(aX+bY)=aE(X)+bE(Y).
+
+### Expected values for PDFs
+
+For continuous random variables, E(X) is the area under the function t*f(t), where f(t) is the PDF (probability density function) of X.
+
+For a continuous random variable, X, with density, f, the expected value is the center of mass of the density. 
+
+Imagine the density curve is being cut out on a piece of wood and you're trying to find a balance point on the bottom like it's a see-saw. 
+
+Facts about expected values:
+
+* Expected values are properties of distributions (i.e. the center of mass)
+* The average of random variables is itself a random vairbale, and so its associated distribution has an expected value
+* The center of the above distribution is the same as that of the original distribution
+
+The expected value of the sample mean is EXACTLY the population mean that it's trying to estimate. 
+
+The sample mean is **unbiased** because its distribution is centered at what it's trying to estimate. 
+
+The more data that goes into the sample mean, the more concentrated its density/mass function is around the population mean. 
+
+
+## QUIZ
+
+1. Consider influenza epidemics for two parent heterosexual families. Suppose that the probability is 17% that at least one of the parents has contracted the disease. The probability that the father has contracted influenza is 12% while the probability that both the mother and father have contracted the disease is 6%. What is the probability that the mother has contracted influenza?
+
+**Answer**:
+
+The probability that at least one of the parents contracted the disease = \(P(A \cup B) = 0.17\)
+
+The probability that the father contracted the disease = \(P(A)) = 0.12\)
+
+The probability that both the mother and father contracted the disease = \(P(A \cap B) = 0.06\)
+
+If we know that \(P(A \cup B) = P(A) + P(B) - P(A \cap B)\), then: 
+
+\(0.17 = 0.12 + P(B) - 0.06\)
+
+```{r, Q1q1}
+0.23 - 0.12
+```
+
+2. A random variable, XX is uniform, a box from 0 to 1 of height 1. (So that its density is f(x) = 1f(x)=1 for 0\leq x \leq 10≤x≤1.) What is its 75th percentile?
+
+**Answer**:
+
+The `qunif` function gives the quantile for uniform distributions, so:
+
+```{r, Q1q2}
+qunif(p = 0.75, min = 0, max = 1)
+```
+
+3. You are playing a game with a friend where you flip a coin and if it comes up heads you give her XX dollars and if it comes up tails she gives you YY dollars. The probability that the coin is heads is pp (some number between 00 and 11.) What has to be true about XX and YY to make so that both of your expected total earnings is 00. The game would then be called “fair”.
+
+**Answer**:
+
+If X means winning money and Y means losing money, then X + Y must equal 0 for the game to be considered fair. If the probability of X is p, then the probability of Y is (1-p) This can be rewritten as:
+
+\(X \times p - Y \times (1 - p) = 0\)
+
+\(X \times p = Y \times (1 - p)\)
+
+\(\frac{p}{(1 - p)} = \frac{Y}{X}\)
+
+4. A density that looks like a normal density (but may or may not be exactly normal) is exactly symmetric about zero. (Symmetric means if you flip it around zero it looks the same.) What is its median?
+
+**Answer**:
+
+If the density is symmetric at 0, it's median is also 0. 
+
+5. Consider the PMF shown below:
+
+```{r, Q1E5}
+x <- 1:4
+p <- x/sum(x)
+temp <- rbind(x, p)
+rownames(temp) <- c("X", "Prob")
+temp
+```
+
+What is the mean?
+
+**Answer**:
+
+The center of mass of data is the empirical mean \(\bar X = \sum\limits_{i=1}^n x_ip(x_i)\) and the mean is the sum of X with its related probability, so:
+
+```{r, Q1q5}
+sum(temp["X",] * temp["Prob",])
+```
+
+
+6. A web site (www.medicine.ox.ac.uk/bandolier/band64/b64-7.html) for home pregnancy tests cites the following: “When the subjects using the test were women who collected and tested their own samples, the overall sensitivity was 75%. Specificity was also low, in the range 52% to 75%.” Assume the lower value for the specificity. Suppose a subject has a positive test and that 30% of women taking pregnancy tests are actually pregnant. What number is closest to the probability of pregnancy given the positive test?
+
+**Answer**:
+
+Using Bayes' Formula, this is what we're trying to solve:
+
+\(P(pregnant\:\vert\: +) = \frac{P(+\vert pregnant)P(pregnant)}{P(+\vert pregnant)P(pregnant) \:+\:P(+\vert pregnant^c)P(pregnant^c)}\)
+
+This is what we know:
+
+Sensitivity = positive test and actually pregnant = \(P(+\:\vert\:pregnant) = 0.75\)
+
+Specificity = negative test and not pregnant = \(P(-\:\vert\:pregnant^c) = 0.52\), so
+
+\(P(+\:\vert\:pregnant^c) = 1 - P(-\:\vert\:pregnant^c) = 0.48\)
+
+Prevalence of pregnancy in the population = \(P(pregnant) = 0.30\), so
+
+\(P(pregnant^c) = 1 - 0.30 = 0.70\)
+
+Plugging in what we know into the formula:
+
+\(P(pregnant\:\vert\: +) = \frac{0.75 \times 0.30}{0.75 \times 0.30 \:+\:0.48 \times 0.70} = \)
+
+```{r, Q1q6}
+(0.75 * 0.30) / ((0.75 * 0.30) + (0.48 * 0.70))
+
+```
+
+
+# Week 2: Variability, Distribution, & Asymptotics
+
+## Variability 
+
+The variance of a random variable is a measure of spread. Higher variance = more spread.
+
+So if X is a random variable with mean, \(\mu\), the variance is exactly the expencted distance the random variable is from the mean:
+
+\(Var(X) = E[(X - \mu)^2] = E[X^2] - E[X]^2\)
+
+The square root of variance is the **standard deviation**. 
+
+For example, tossing a die:
+
+The expected value, \(E[X]\) is 3.5, and 
+
+\(E[X^2] = 1^2 \times \frac{1}{6} + 2^2 \times \frac{1}{6} + 3^2 \times \frac{1}{6} 
++ 4^2 \times \frac {1}{6} + 5^2 \times \frac{1}{6} + 6^2 \times \frac{1}{6} = 15.17\), so
+
+\(Var(X) = E[X^2] - E[X]^2 = 2.92\)
+
+Another example, flipping a coin where the probability of heads (1) is \(p\):  
+
+\(E[X] = 0 \times (1 - p) + 1 \times p = p\)
+
+\(E[X^2] = E[X] = p\), so 
+
+\(Var(X)= E[X^2] - E[X]^2 = p - p^2 = p(1-p)\)
+
+The population variable and the sample variance are directly analogous. 
+
+Sample variable, \(S^2\), is the average square of distance of observed observations minus the sample mean:
+
+$$
+S^2 = \frac{\sum_{i=1} (X_i - \bar X)^2}{n-1}
+$$
+
+Where \(X_i\) is the average square of distance of observations minus the sample mean, \(\bar X\). 
+
+The variance of the sample variance is also a random variable and therefore also has a population distribution. And that distribution's expected value is the population variance. 
+
+
 
 
 
