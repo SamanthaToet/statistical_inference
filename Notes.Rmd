@@ -473,6 +473,110 @@ Where \(X_i\) is the average square of distance of observations minus the sample
 
 The variance of the sample variance is also a random variable and therefore also has a population distribution. And that distribution's expected value is the population variance. 
 
+More data = better, more concentrated estimate of variance 
+
+### Standard Error of the Mean
+
+Terms and symbols to know:
+
+* Number of members of sample, \(n\), vs. number of members of population \(N\)
+* Sample mean, \(\bar X\), vs. population mean, \(\mu\)
+* Sample variance, \(S^2\), vs. population variance \(\sigma^2\)
+* Standard deviation of the sample, \(s\), vs. standard deviation of the population \(\sigma\)
+
+Remember from expected values:
+
+*  The average of random sample from a pop is itself a random variable with it's own pop mean and variance.
+* The pop mean is the same as the original population: \(E[\bar X] = \mu\)
+* The sample variance relates to the pop variance: \(Var(\bar X) = \sigma^n\)
+
+The variance of the sample mean decreases to 0 as it accumulates more data - i.e. the mean becomes more concentrated about the pop mean. 
+
+The standard deviation of a statistic is the standard error. 
+
+To summarize:
+
+* The sample variance, \(S^2\), estimates the population variance, \(\sigma^2\)
+* The distribution of the sample variance is centered around \(\sigma^2\)
+* The variance of the sample mean is \(\sigma^2 / n\)
+* So the logical estimate of the sample variance, \(S^2\), is \(s^2 / n\)
+* And the logical estimate of the sample standard error (SEM) is \(S / \sqrt{n}\)
+* \(S\), the standard deviation, talks about how variable a population is 
+* \(S / \sqrt{n}\), the standard error, talks about how variable averages of random samples of size \(n\) from the population are
+
+Example:
+
+Standard normals have variance 1 (i.e the means of \(n\) standard normals have standard deviation of \(1 / \sqrt{n}\))
+
+```{r}
+nosim <- 1000 #number of simulations
+n <- 10
+sd(apply(matrix(rnorm(nosim * n), nosim), 1, mean)) 
+```
+
+The above code simulates 1000 x 10 draws from a random normal distribution then arranges them in a matrix with 1000 rows and 10 columns. Then for each row it calculates the mean.
+
+Let's summarize what we know about **Variability**:
+
+1. The sample variance estimates the population variance
+2. The distribution of the sample variance is centered at what it's estimating (unbiased)
+3. The distribution of the sample variance gets more concentrated around the pop variance with larger sample sizes
+4. The variance of the sample mean is the pop variance divided by \(n\) (i.e. \(Var(\bar X) = \sigma^2 / n)\))
+5. And \(\sigma / \sqrt{n}\) is the standard error
+
+
+## Distributions
+
+### Binomial Distributions
+
+Characteristics of Bernoulli Distributions:
+
++ The result of a binary outcome (i.e. a coin flip)
++ Bernoulli random variables take only the values 1 and 0 with probabilities of \(p\) and \(1-p\) respectively 
++ The Bernoulli probability mass function PMF = \(P(X = x) = p^x(1-p)^{1-x}\)
++ The mean of a Bernoulli random variable is \(p\) and the variance is \(p(1-p)\)
+
+Binomial trials:
+
+A binomial random variable is the total number of Heads on the flips of a potentially biased coin.
+
+Mathmatically, let \(X_1\), ..., \(X_n\) be IID Bernoulli(\(p\)); 
+
+then \(X = \sum_{i = 1}^n X_i\) is a binomial random variable.
+
+The binomial mass function = \(P(X = x) = \binom{n}{x}p^x(1-p)^{n-x}\) where
+\(\binom{n}{x} = \frac{n!}{x!(n-x)!}\) and \(\binom{n}{0} = \binom{n}{n} = 1\).
+
+And \(n\) choose \(x\) counts the number of ways of selecting \(x\) items out of \(n\) without replacement disregarding the order of the items. 
+
+Example:
+
+Suppose a friend has 8 children, 7 of which are girls and none are twins. If each gender has an independent 50% probability for each birth, what's the probability of getting 7 or more girls out of 8 births?
+
+\(\binom{8}{7}0.5^7(1-0.5)^1 + \binom{8}{8}0.5^8(1-0.5)^0 \approx 0.04\)
+
+To do the above in R:
+
+```{r}
+choose(8, 7) * 0.5^8 + choose(8, 8) * 0.5^8 #math
+
+pbinom(6, size = 8, prob = 0.5, lower.tail = F) #function
+```
+
+### Normal Distributions
+
+Characteristics:
+
++ **Gaussian** distribution with mean \(\mu\) and variance \(\sigma^2\)
++ Denisity is bell curve
++ If X is a random variable with this density, then the expected value of X is \(\mu\) and it's variance is \(\sigma^2\) (i.e. \(E[X] = \mu\) and \(Var(X) = \sigma^2\)). This can also be written as \(X\) ~ \(N(\mu, \sigma^2)\)
++ When \(\mu = 0\) and \(\sigma = 1\), the resulting distribution is a **standard normal distribution**
++ Standard normal random variables are \(z\)
+
+
+
+
+
 
 
 
