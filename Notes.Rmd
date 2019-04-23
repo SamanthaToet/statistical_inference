@@ -442,6 +442,10 @@ So if X is a random variable with mean, \(\mu\), the variance is exactly the exp
 
 \(Var(X) = E[(X - \mu)^2] = E[X^2] - E[X]^2\)
 
+Var(X) = E( (X-mu)^2 ) = E( (X-E(X))^2 ) = E(X^2)-E(X)^2
+
+If the variation is a constant, a, then Var(aX)=a^2*Var(X)
+
 The square root of variance is the **standard deviation**. 
 
 For example, tossing a die:
@@ -570,8 +574,75 @@ Characteristics:
 + **Gaussian** distribution with mean \(\mu\) and variance \(\sigma^2\)
 + Denisity is bell curve
 + If X is a random variable with this density, then the expected value of X is \(\mu\) and it's variance is \(\sigma^2\) (i.e. \(E[X] = \mu\) and \(Var(X) = \sigma^2\)). This can also be written as \(X\) ~ \(N(\mu, \sigma^2)\)
-+ When \(\mu = 0\) and \(\sigma = 1\), the resulting distribution is a **standard normal distribution**
++ When the mean is 0\(\mu = 0\) and the variance \(\sigma = 1\), the resulting distribution is a **standard normal distribution**
 + Standard normal random variables are \(z\)
+
+
+Reference probabilites of the standard normal distribution:
+
++ **68%** of the mass lays between -1 and +1 standard deviations from the mean
++ **95%** of the mass lays between -2 and +2 standard deviations from the mean - that leaves **2.5%** in either tail
++ **99%** of the mass lays between -3 and +3 standard deviations from the mean
+
+
+When moving between standard and nonstandard normals:
+
+If \(X\) is normal with mean \(\mu\) and variance \(\sigma^2\) (also written as If \(X\) ~ \(N(\mu, \sigma^2)\)), then if we convert the units of \(X\) to standard deviations from the mean, the resulting random variable \(Z\), is a standard normal, i.e \(Z= \frac{X - \mu}{\sigma}\) ~ \(N(0,1)\).
+
+Conversely, if \(Z\) is a standard normal, then the resulting random variable is nonstandard normal \(X\) \(X = \mu + \sigma Z\) ~ \(N(\mu, \sigma^2)\).
+
+
+Standard normal Quantiles:
+
++ At **-1.28** standard deviations (\(\mu - 1.28\sigma\)), 10% of the density lays below it and 90% lays above it. 
++ At **+1.28** standard deviations (\(\mu + 1.28\sigma\)), 10% of the density lays above it and 90% lays below it. (80% between -1.28 and +1.28)
++ At **-1.645** standard deviations (\(\mu - 1.645\sigma\)), 5% of the density lays below it and 95% lays above it. 
++ At **+1.645** standard deviations (\(\mu + 1.645\sigma\)), 5% of the density lays above it and 95% lays below it. (90% between -1.645 and +1.645)
++ At **-1.96** standard deviations (\(\mu - 1.96\sigma\)), 2.5% of the density lays below it and 97.5% lays above it. 
++ At **+1.96** standard deviations (\(\mu + 1.96\sigma\)), 2.5% of the denisty lays above it and 97.5% lays below it. (**95% between -1.96 and +1.96**)
+
+
+**Question**: What is the 95th percentile of a \(N(\mu, \sigma^2)\) (Normal) distribtuion? (i.e. we want the point where 95% of the pop's density falls below it.)
+
+**Answer**: use the `qnorm` function:
+
+```{r, eval=FALSE}
+qnorm(0.95, mean = mu, sd = sd) # use std not variance
+```
+
+**Question**: What is the probability that a \(N(\mu, \sigma^2)\) RV (Normal Random Variable) is larger than \(x\)?
+
+**Answer**: use the `pnorm` function:
+
+```{r, eval=FALSE}
+pnorm(x, mean = mu, sd = sigma, # use std not variance
+      lower.tail = FALSE) # want upper tail
+```
+
+OR to solve conceptually: Convert \(x\) to how many stds from the mean it is: \(\frac{x - \mu}{\sigma}\) and guestimate
+
+
+### The Poisson Distribution
+
+The Poisson Mass Function: \(P(X = x;\lambda) = \frac{\lambda^x e^{- \lambda}}{x!}\)
+
+The mean of this distrubution is \(\lambda\) and the variance is also \(\lambda\)
+
+Some uses:
+
++ Modeling count data (esp. if unbounded)
++ Modeling event-time or survival data
++ Modeling contingency tables 
++ Approximating binomials when \(n\) is large and \(p\) is small 
+
+Rates and Poisson random variables:
+
+Poisson random variables are used to model rates
+
+\(X\) ~ \(Poisson(\lambda t)\) where:
+
++ \(\lambda = E[X/t]\) is the expected count per unit of time
++ \(t\) is the total monitoring time
 
 
 
